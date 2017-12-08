@@ -1,0 +1,20 @@
+{
+  "name": "kj-profile",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Public Profile for Kevin Jenkins",
+  "keywords": [
+    "node",
+    "jenkins"
+  ],
+  "author": "kevin.j.1914@gmail.com",
+  "license": "",
+  "main": "html/index.html",
+  "devDependencies": {
+    "aws-sdk": "^2.165.0",
+    "es6-promisify": "^5.0.0",
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-hub": "^0.8.0",
+    "gulp-util": "^3.0.8"
+  }
+}
