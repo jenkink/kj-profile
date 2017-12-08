@@ -1,10 +1,20 @@
 #!/usr/bin/env groovy
 pipeline {
-    agent any 
+    agent{
+      docker {
+        image 'node:8'
+        args '-u root:root'
+      }
+    }
     stages {
-      stage('test') {
+      stage('npm install') {
         steps {
-          echo 'Testing'
+          sh 'npm install'
+        }
+      }
+      stage('Deploy') {
+        steps {
+          sh 'node_modules/.bin/gulp'
         }
       }
     }
