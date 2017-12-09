@@ -1,0 +1,17 @@
+/*** Global Window Styles ***/
+
+html, body, .container {
+    height: 100%;
+    width: 100%;
+    min-width: 1000px;
+}
+
+body {
+    color: #8fa7b2;
+    background-color: rgba(28, 33, 40, 1);
+    background-position: top;
+    background-repeat: no-repeat;
+    font-family: "Open-Sans", sans-serif;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
