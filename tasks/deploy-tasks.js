@@ -2,6 +2,7 @@
 
 const AWS = require('aws-sdk');
 const fs = require('fs');
+const glob = require('glob');
 const gulp = require('gulp');
 const gutil = require('gulp-util');
 const promisify = require('es6-promisify');
@@ -9,17 +10,19 @@ const s3 = new AWS.S3();
 
 const config = require('../config/config.json');
 
-const readDir = promisify(fs.readdir);
+const globDir = promisify(glob);
 
 gulp.task('updateProfile', copyFilesToS3);
-
 
 /**
  * locates the files to copy to S3
  * @return {Promise}
  */
 function copyFilesToS3() {
-    return readDir('html')
+  const options ={
+    nodir : true,
+  }
+    return globDir('resources/**', options)
       .catch((err) => {
         return Promise.reject(gutil.log(gutil.colors.red('Could not read the given directory.', err)));
       })
@@ -29,7 +32,13 @@ function copyFilesToS3() {
         const uploadPromises = [];
         if (numFiles) {
           Object.keys(files).forEach((file) => {
-            uploadPromises.push(s3Upload(`${files[file]}`, 'html/'));
+            if(files[file].includes('index')){
+              //strip the directory so we can place index.html into the top level of the s3Bucket
+              const fileSplit = files[file].split('/');
+              uploadPromises.push(s3Upload(`${fileSplit[1]}`, 'resources/'));       
+            }else{
+            uploadPromises.push(s3Upload(`${files[file]}`));
+            }
           });
           return Promise.all(uploadPromises);
         }
@@ -48,11 +57,14 @@ function s3Upload(key, sourceDir) {
     let Bucket = config.s3Bucket;
     const t = 5000;
     let data;
+    if(!sourceDir){
+       sourceDir = '';
+    }
     try {
       gutil.log(`Uploading ${sourceDir}${key} to S3...`);
       data = fs.readFileSync(`${sourceDir}${key}`);
     } catch (err) {
-      gutil.log(`failed to read ${sourceDir}/${key}`);
+      gutil.log(`failed to read ${sourceDir}${key}`);
       return Promise.reject(err);
     }
     
