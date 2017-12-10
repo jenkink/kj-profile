@@ -1,3 +1,3 @@
 # kj-profile
 
-Online Resume
+Online Resume for KJ
