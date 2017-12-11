@@ -57,18 +57,6 @@ function s3Upload(key, sourceDir) {
     let Bucket = config.s3Bucket;
     const t = 5000;
     let data;
-    let options = {
-      Bucket: Bucket,
-      Key: key,
-      Body: data,
-      ACL: 'public-read',
-    }
-    
-    //set the content type for html files other wise the content type will be set as an attachment
-    if(key.includes('html')){
-      options.contentType = 'text/html';
-    }
-
     if(!sourceDir){
        sourceDir = '';
     }
@@ -79,9 +67,21 @@ function s3Upload(key, sourceDir) {
       gutil.log(`failed to read ${sourceDir}${key}`);
       return Promise.reject(err);
     }
+
+    let params = {
+      Bucket: Bucket,
+      Key: key,
+      Body: data,
+      ACL: 'public-read',
+    }
     
+    //set the content type for html files other wise the content type will be set as an attachment
+    if(key.includes('html')){
+      params.contentType = 'text/html';
+    }
+
     // let base64data = data;
-    return s3.upload(options).promise()
+    return s3.upload(params).promise()
       .catch((err) => {
         gutil.log(`${key} Failed to upload`);
         return Promise.reject(err);
