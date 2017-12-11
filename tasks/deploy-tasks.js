@@ -77,7 +77,7 @@ function s3Upload(key, sourceDir) {
     
     //set the content type for html files other wise the content type will be set as an attachment
     if(key.includes('html')){
-      params.contentType = 'text/html';
+      params.ContentType = 'text/html';
     }
 
     // let base64data = data;
