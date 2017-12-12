@@ -1,14 +1,14 @@
 /*** Global Window Styles ***/
 
-html, body, .main-container {
+html, body, .container {
     height: 100%;
     width: 100%;
     min-width: 1000px;
 }
 
 body {
-    color: #8fa7b2;
-    background-color: rgba(28, 33, 40, 1);
+    color: #415d69;
+    background-color: rgba(189, 152, 67, 0.144);
     background-position: top;
     background-repeat: no-repeat;
     font-family: "Open-Sans", sans-serif;
@@ -16,6 +16,37 @@ body {
     overflow-x: hidden;
 }
 
-resume-header{
+.container{
+    height:100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin:0;
+    padding:0;
+    overflow: scroll;
+}
+
+.resume-header{
     text-align: center;
+}
+.summary{
+    width: 50%;
+}
+.tech{
+    width: 50%;   
+}
+.expierence{
+
+}
+
+.education{
+    
+}
+
+.code-samples{
+        
+}
+
+.jenkins{
+            
 }

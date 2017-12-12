@@ -19,33 +19,33 @@ gulp.task('updateProfile', copyFilesToS3);
  * @return {Promise}
  */
 function copyFilesToS3() {
-  const options ={
-    nodir : true,
+  const options = {
+    nodir: true,
   }
-    return globDir('resources/**', options)
-      .catch((err) => {
-        return Promise.reject(gutil.log(gutil.colors.red('Could not read the given directory.', err)));
-      })
-      .then((files) => {
-        const numFiles = files.length;
-  
-        const uploadPromises = [];
-        if (numFiles) {
-          Object.keys(files).forEach((file) => {
-            if(files[file].includes('index')){
-              //strip the directory so we can place index.html into the top level of the s3Bucket
-              const fileSplit = files[file].split('/');
-              uploadPromises.push(s3Upload(`${fileSplit[1]}`, 'resources/'));       
-            }else{
+  return globDir('resources/**', options)
+    .catch((err) => {
+      return Promise.reject(gutil.log(gutil.colors.red('Could not read the given directory.', err)));
+    })
+    .then((files) => {
+      const numFiles = files.length;
+
+      const uploadPromises = [];
+      if (numFiles) {
+        Object.keys(files).forEach((file) => {
+          if (files[file].includes('index')) {
+            //strip the directory so we can place index.html into the top level of the s3Bucket
+            const fileSplit = files[file].split('/');
+            uploadPromises.push(s3Upload(`${fileSplit[1]}`, 'resources/'));
+          } else {
             uploadPromises.push(s3Upload(`${files[file]}`));
-            }
-          });
-          return Promise.all(uploadPromises);
-        }
-  
-        return Promise.resolve();
-      });
-  }
+          }
+        });
+        return Promise.all(uploadPromises);
+      }
+
+      return Promise.resolve();
+    });
+}
 
 /**
  * Utility function to upload items to s3
@@ -54,42 +54,44 @@ function copyFilesToS3() {
  * @return {Promise<void>}
  */
 function s3Upload(key, sourceDir) {
-    let Bucket = config.s3Bucket;
-    const t = 5000;
-    let data;
-    if(!sourceDir){
-       sourceDir = '';
-    }
-    try {
-      gutil.log(`Uploading ${sourceDir}${key} to S3...`);
-      data = fs.readFileSync(`${sourceDir}${key}`);
-    } catch (err) {
-      gutil.log(`failed to read ${sourceDir}${key}`);
-      return Promise.reject(err);
-    }
-
-    let params = {
-      Bucket: Bucket,
-      Key: key,
-      Body: data,
-      ACL: 'public-read',
-    }
-    
-    //set the content type for html files other wise the content type will be set as an attachment
-    if(key.includes('html')){
-      params.ContentType = 'text/html';
-    }
-
-    // let base64data = data;
-    return s3.upload(params).promise()
-      .catch((err) => {
-        gutil.log(`${key} Failed to upload`);
-        return Promise.reject(err);
-      })
-      .then(() => {
-        return new Promise((resolve) => {
-            setTimeout(resolve, );
-          });
-      });
+  let Bucket = config.s3Bucket;
+  const t = 5000;
+  let data;
+  if (!sourceDir) {
+    sourceDir = '';
   }
-  
+  try {
+    gutil.log(`Uploading ${sourceDir}${key} to S3...`);
+    data = fs.readFileSync(`${sourceDir}${key}`);
+  } catch (err) {
+    gutil.log(`failed to read ${sourceDir}${key}`);
+    return Promise.reject(err);
+  }
+
+  let params = {
+    Bucket: Bucket,
+    Key: key,
+    Body: data,
+    ACL: 'public-read',
+  }
+
+  //set the content type for html files other wise the content type will be set as an attachment
+  if (key.includes('html')) {
+    params.ContentType = 'text/html';
+  }
+  if (key.includes('css')) {
+    params.ContentType = 'text/css';
+  }
+
+  // let base64data = data;
+  return s3.upload(params).promise()
+    .catch((err) => {
+      gutil.log(`${key} Failed to upload`);
+      return Promise.reject(err);
+    })
+    .then(() => {
+      return new Promise((resolve) => {
+        setTimeout(resolve, );
+      });
+    });
+}
