@@ -28,17 +28,12 @@ function copyFilesToS3() {
     })
     .then((files) => {
       const numFiles = files.length;
-
       const uploadPromises = [];
       if (numFiles) {
         Object.keys(files).forEach((file) => {
-          if (files[file].includes('index')) {
-            //strip the directory so we can place index.html into the top level of the s3Bucket
-            const fileSplit = files[file].split('/');
-            uploadPromises.push(s3Upload(`${fileSplit[1]}`, 'resources/'));
-          } else {
-            uploadPromises.push(s3Upload(`${files[file]}`));
-          }
+          //we dont need the resources prefix for the structure on S3
+          const upload = files[file].replace('resources/', '');
+          uploadPromises.push(s3Upload(upload, 'resources/'));
         });
         return Promise.all(uploadPromises);
       }
@@ -75,7 +70,7 @@ function s3Upload(key, sourceDir) {
     ACL: 'public-read',
   }
 
-  //set the content type for html files other wise the content type will be set as an attachment
+  //set the content type otherwise the content type will be set as an attachment by s3 and will download instead of displaying the html
   if (key.includes('html')) {
     params.ContentType = 'text/html';
   }
@@ -90,8 +85,9 @@ function s3Upload(key, sourceDir) {
       return Promise.reject(err);
     })
     .then(() => {
+      // with S3 we have eventual consistency so we need to wait a few seconds for the changes to propagate
       return new Promise((resolve) => {
-        setTimeout(resolve, );
+        setTimeout(resolve, t);
       });
     });
 }
