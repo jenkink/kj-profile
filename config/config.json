@@ -1,4 +1,4 @@
 {
     "s3Bucket": "kj-profile",
-    "portNumber": 8080
+    "portNumber": 3000
 }

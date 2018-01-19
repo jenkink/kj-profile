@@ -20,6 +20,8 @@ COPY . .
 LABEL maintainer="KWJ <kevin.j.1914@gmail.com>" \
     version="1.0"
 
-EXPOSE 8080
+ENV PORT 3000
 
 CMD npm start
+
+EXPOSE 3000
