@@ -17,7 +17,8 @@ RUN npm install && mv node_modules /node_modules
 
 COPY . .
 
-LABEL maintainer="KWJ <kevin.j.1914@gmail.com>"
+LABEL maintainer="KWJ <kevin.j.1914@gmail.com>" \
+    version="1.0"
 
 EXPOSE 8080
 

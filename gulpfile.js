@@ -5,4 +5,4 @@ const hub = require('gulp-hub');
 
 hub(['tasks/**/*.js']);
 
-gulp.task('default', gulp.series('db'));
+gulp.task('default', gulp.series('updateProfile'));
