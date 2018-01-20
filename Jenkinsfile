@@ -5,7 +5,8 @@ pipeline {
       stage('Build And Deploy') {
         steps {
 		  sh 'ls -la'
-          sh 'build.sh'
+		  sh 'chmod +x build.sh'
+          sh './build.sh'
         }
       }
     }
