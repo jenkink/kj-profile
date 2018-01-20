@@ -2,8 +2,12 @@
 
 set -e
 
+#docker login
+$(aws ecr get-login --region us-east-1 --no-include-email)
+
 DOCKER_REPO="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO:$REVISION"
 
+echo $DOCKER_REPO
 echo "Building image..."
 docker build -t $DOCKER_REPO .
 echo "Pushing image"
