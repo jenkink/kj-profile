@@ -6,6 +6,7 @@ pipeline {
         steps {
 		  sh 'ls -la'
 		  sh 'chmod +x build.sh'
+		  sh 'printenv'
           sh './build.sh'
         }
       }
