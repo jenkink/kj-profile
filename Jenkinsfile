@@ -2,8 +2,9 @@
 pipeline {
     agent any
     stages {
-      stage('Deploy') {
+      stage('Build And Deploy') {
         steps {
+		  sh 'ls -la'
           sh 'build.sh'
         }
       }
