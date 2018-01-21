@@ -2,10 +2,10 @@
 
 set -e
 
-SERVICE_NAME="kj-profileCI-kj-profile-service"
-TASK_FAMILY="kj-profileCI-kj-profile-task"
-REVISON=`expr substr $GIT_COMMIT 0 5`
-
+SERVICE_NAME="kj-profileCI-service"
+TASK_FAMILY="kj-profileCI-task"
+REVISON= `echo $GIT_COMMIT | awk '{print substr($0,0,5)}'`
+echo REVISION
 #docker login
 $(aws ecr get-login --region us-east-1 --no-include-email)
 
