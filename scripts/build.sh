@@ -4,6 +4,7 @@ set -e
 
 SERVICE_NAME="kj-profileCI-kj-profile-service"
 TASK_FAMILY="kj-profileCI-kj-profile-task"
+REVISON=`expr substr $GIT_COMMIT 0 5`
 
 #docker login
 $(aws ecr get-login --region us-east-1 --no-include-email)
@@ -24,10 +25,7 @@ aws cloudformation update-stack --stack-name $STACK_NAME --use-previous-template
   ParameterKey=SubnetIDs,UsePreviousValue=true \
   ParameterKey=VpcId,UsePreviousValue=true
 
-TASK_REVISION=`aws ecs describe-task-definition --task-definition $TASK_FAMILY | egrep "revision" | tr "/" " " | awk '{print $2}' | sed 's/"$//'`
-DESIRED_COUNT=`aws ecs describe-services --services ${SERVICE_NAME} | egrep "desiredCount" | tr "/" " " | awk '{print $2}' | sed 's/,$//'`
-if [ ${DESIRED_COUNT} = "0" ]; then
-    DESIRED_COUNT="1"
-fi
+#TASK_REVISION=`aws ecs describe-task-definition --task-definition $TASK_FAMILY | egrep "revision" | tr "/" " " | awk '{print $2}' | sed 's/"$//'`
 
-aws ecs update-service --cluster default --service $SERVICE_NAME --task-definition $TASK_FAMILY:$TASK_REVISION --desired-count $DESIRED_COUNT
+
+#aws ecs update-service --cluster default --service $SERVICE_NAME --task-definition $TASK_FAMILY:$TASK_REVISION --desired-count $DESIRED_COUNT
