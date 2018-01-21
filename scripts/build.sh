@@ -2,11 +2,8 @@
 
 set -e
 
-SERVICE_NAME="kj-profileCI-service"
-TASK_FAMILY="kj-profileCI-task"
 REVISION=$(echo $GIT_COMMIT|awk '{print substr($0,0,7)}')
 
-echo $REVISION
 #docker login
 $(aws ecr get-login --region us-east-1 --no-include-email)
 
@@ -25,8 +22,3 @@ aws cloudformation update-stack --stack-name $STACK_NAME --use-previous-template
   ParameterKey=MaxSize,UsePreviousValue=true \
   ParameterKey=SubnetIDs,UsePreviousValue=true \
   ParameterKey=VpcId,UsePreviousValue=true
-
-#TASK_REVISION=`aws ecs describe-task-definition --task-definition $TASK_FAMILY | egrep "revision" | tr "/" " " | awk '{print $2}' | sed 's/"$//'`
-
-
-#aws ecs update-service --cluster default --service $SERVICE_NAME --task-definition $TASK_FAMILY:$TASK_REVISION --desired-count $DESIRED_COUNT
