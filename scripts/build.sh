@@ -22,6 +22,7 @@ echo $TEMPLATE
 REVISION=$(echo $GIT_COMMIT|awk '{print substr($0,0,7)}')
 
 function build_docker_image(){
+  echo "BUILDING DOCKER"
   #docker login
   $(aws ecr get-login --region us-east-1 --no-include-email)
 
@@ -51,6 +52,7 @@ function update_stack(){
   echo "Stack Update has completed."
 }
 function main(){
+  echo "STARTING UP"
   build_docker_image
   s3_copy
   update_stack
