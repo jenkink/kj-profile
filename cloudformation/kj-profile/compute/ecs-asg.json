@@ -201,8 +201,6 @@
       "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
       "DependsOn": "ELBListener",
       "Properties": {
-        "Port": 80,
-        "Protocol": "HTTP",
         "ListenerArn": {
           "Ref": "ELBListener"
         },
