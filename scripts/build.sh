@@ -29,7 +29,7 @@ function build_docker_image(){
   docker push $DOCKER_REPO
 }
 function s3_copy(){
-  echo "putting templates in s3"
+  echo "Putting templates in s3"
   aws s3 cp cloudformation/$CF_TEMPLATE_DIR/ s3://$CF_TEMPLATE_DIR/cf-templates/ --recursive
   aws s3 cp cloudformation/puppet/ s3://$CF_TEMPLATE_DIR/cf-templates/ --recursive
   sleep 10 #wait for files to propagate
@@ -46,7 +46,6 @@ function update_stack(){
   echo "Stack Update has completed."
 }
 function main(){
-  echo "STARTING UP"
   build_docker_image
   s3_copy
   update_stack
