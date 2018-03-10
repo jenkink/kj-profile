@@ -4,21 +4,15 @@ set -e
 #export AWS_DEFAULT_PROFILE="kj"
 if [ ! $1 ]; then
   echo "Usage: $(basename $0) CF_TEMPLATE_DIR "
-  echo
-  echo "        BUILD_TYPE - (CREATE_CHANGE_SET, EXECUTE_CHANGE_SET, DELETE_CHANGE_SET)"
+  echo ""
   echo "        CF_TEMPLATE_DIR - The directory where the cloudformation template lives."
-  echo "        ENV - The environment that this build is for."
   echo ""
   exit 1
 fi
-
-
-#BUILD_TYPE=$1
+echo "works?"
 CF_TEMPLATE_DIR=$1
-#ENV=$3
 REGION=$(aws configure get region)
 TEMPLATE="cloudformation/$CF_TEMPLATE_DIR/compute/$CF_TEMPLATE_DIR.json"
-echo $TEMPLATE
 REVISION=$(echo $GIT_COMMIT|awk '{print substr($0,0,7)}')
 
 function build_docker_image(){
