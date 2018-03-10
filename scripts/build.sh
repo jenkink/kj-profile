@@ -9,9 +9,9 @@ if [ ! $1 ]; then
   echo ""
   exit 1
 fi
-echo "works?"
+
 CF_TEMPLATE_DIR=$1
-REGION=$(aws configure get region)
+REGION="us-east-1"
 TEMPLATE="cloudformation/$CF_TEMPLATE_DIR/compute/$CF_TEMPLATE_DIR.json"
 REVISION=$(echo $GIT_COMMIT|awk '{print substr($0,0,7)}')
 
