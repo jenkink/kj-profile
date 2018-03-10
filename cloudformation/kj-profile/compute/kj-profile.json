@@ -175,7 +175,7 @@
             "DependsOn": "PuppetServer",
             "Properties": {
                 "TemplateURL": {
-                    "Fn::Sub": "https://s3.amazonaws.com/${BucketName}/compute/ecs-asg.json"
+                    "Fn::Sub": "https://s3.amazonaws.com/${BucketName}/cf-templates/compute/ecs-asg.json"
                 },
                 "Parameters": {
                     "KeyPairName": {
