@@ -37,5 +37,5 @@ echo "pulling down params file"
 aws s3 cp s3://$CF_TEMPLATE_DIR/cf-templates/compute/params_$STACK_NAME.json cloudformation/$CF_TEMPLATE_DIR/compute/params.json
 echo "Updating CFN"
 aws cloudformation update-stack --stack-name $STACK_NAME --template-body file://$TEMPLATE --capabilities CAPABILITY_IAM \
-  --parameters file://cloudformation/$CF_TEMPLATE_DIR/computeparams.json
+  --parameters file://cloudformation/$CF_TEMPLATE_DIR/compute/params.json
 
