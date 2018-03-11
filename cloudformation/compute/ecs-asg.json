@@ -423,10 +423,16 @@
       "Properties": {
         "AliasTarget": {
           "HostedZoneId": {
-            "Fn::GetAtt": "${ALB}.CanonicalHostedZoneID"
+            "Fn::GetAtt": [
+              "ALB",
+              "CanonicalHostedZoneID"
+            ]
           },
           "DNSName": {
-            "Fn::GetAtt": "${ALB}.DNSName"
+            "Fn::GetAtt": [
+              "ALB",
+              "DNSName"
+            ]
           }
         },
         "HostedZoneId": {
