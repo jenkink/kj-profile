@@ -185,7 +185,7 @@
         "LoadBalancerArn": {
           "Ref": "ELB"
         },
-        "Port": "3000",
+        "Port": 80,
         "Protocol": "HTTP",
         "DefaultActions": [
           {
@@ -233,6 +233,9 @@
         "HealthCheckProtocol": "HTTP",
         "HealthCheckTimeoutSeconds": 5,
         "HealthyThresholdCount": 2,
+        "Matcher": {
+          "HttpCode": "200-299"
+        },
         "Port": 3000,
         "Protocol": "HTTP",
         "UnhealthyThresholdCount": 2,
@@ -434,7 +437,9 @@
         "Type": "CNAME",
         "TTL": "900",
         "ResourceRecords": [
-          "test.com"
+          {
+            "Fn::Sub": "${ELB}.DNSName"
+          }
         ]
       }
     }
