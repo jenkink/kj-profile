@@ -43,7 +43,6 @@ function s3_copy(){
   jq -e -r --arg  DOCKER_REPO "$DOCKER_REPO" 'map ((select(.ParameterKey=="DockerImageURL") | .ParameterValue) |= $DOCKER_REPO)' \
   "$PARAMSFILE" > "cloudformation/$CF_TEMPLATE_DIR/compute/temp.json" && mv "cloudformation/$CF_TEMPLATE_DIR/compute/temp.json" "$PARAMSFILE"
    
-  exit
 }
 #find out if our stack has already been created
 function check_stack(){
