@@ -461,7 +461,10 @@
     "EcsDNS": {
       "Description": "The DNS endpoint of your Load Balancer",
       "Value": {
-        "Fn::Sub": "${ALB}.DNSName"
+        "Fn::GetAtt": [
+          "ALB",
+          "DNSName"
+        ]
       }
     }
   }
