@@ -434,9 +434,7 @@
         "Type": "CNAME",
         "TTL": "900",
         "ResourceRecords": [
-          {
-            "Fn::Sub": "${ELB}.DNSName"
-          }
+          "test.com"
         ]
       }
     }
