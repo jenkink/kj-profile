@@ -423,18 +423,10 @@
       "Properties": {
         "AliasTarget": {
           "HostedZoneId": {
-            "Fn::Join": [
-              "",
-              [
-                "/hostedzone/",
-                {
-                  "Ref": "HostedZoneId"
-                }
-              ]
-            ]
+            "Fn::GetAtt": "${ALB}.CanonicalHostedZoneID"
           },
           "DNSName": {
-            "Fn::Sub": "${ALB}.DNSName"
+            "Fn::GetAtt": "${ALB}.DNSName"
           }
         },
         "HostedZoneId": {
@@ -449,13 +441,7 @@
           ]
         },
         "Name": "profile.kWesJenks.com",
-        "Type": "A",
-        "TTL": "900",
-        "ResourceRecords": [
-          {
-            "Fn::Sub": "${ALB}.DNSName"
-          }
-        ]
+        "Type": "A"
       }
     }
   },
