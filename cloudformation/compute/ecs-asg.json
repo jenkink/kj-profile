@@ -10,6 +10,11 @@
       "Type": "AWS::EC2::VPC::Id",
       "Description": "Select a VPC that allows instances to access the Internet."
     },
+    "KjProfileCert": {
+      "Description": "SSL Cert Arn",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "kj-profile-cert-arn"
+    },
     "HostedZoneId": {
       "Description": "Hosted Zone id",
       "Type": "AWS::SSM::Parameter::Value<String>",
@@ -176,6 +181,31 @@
         "SecurityGroups": [
           {
             "Ref": "ALBSecurityGroup"
+          }
+        ]
+      }
+    },
+    "ALBListener443": {
+      "Type": "AWS::ElasticLoadBalancingV2::Listener",
+      "Properties": {
+        "LoadBalancerArn": {
+          "Ref": "ALB"
+        },
+        "Certificates": [
+          {
+            "CertificateArn": {
+              "Ref": "KjProfileCert"
+            }
+          }
+        ],
+        "Port": 443,
+        "Protocol": "HTTPS",
+        "DefaultActions": [
+          {
+            "Type": "forward",
+            "TargetGroupArn": {
+              "Ref": "ALBTargetGroup"
+            }
           }
         ]
       }

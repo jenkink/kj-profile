@@ -1,6 +1,6 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "Entry Point for the Puppet Stack.",
+    "Description": "Entry Point for KJ-Profile.",
     "Parameters": {
         "KeyPairName": {
             "Description": "Public/private key pair",
@@ -150,9 +150,6 @@
                             "VPCStack",
                             "Outputs.VPC"
                         ]
-                    },
-                    "HostedZoneId": {
-                        "Ref": "HostedZoneId"
                     },
                     "PuppetMasterIP": {
                         "Ref": "PuppetMasterIP"
