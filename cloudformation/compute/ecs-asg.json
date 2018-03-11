@@ -11,8 +11,9 @@
       "Description": "Select a VPC that allows instances to access the Internet."
     },
     "HostedZoneId": {
-      "Type": "String",
-      "Description": "Hosted Zone for DNS"
+      "Description": "Hosted Zone id",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "kj-profile-hosted-zone"
     },
     "DockerImageURL": {
       "Type": "String",

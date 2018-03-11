@@ -20,6 +20,11 @@
             "Default": "10.192.0.0/16",
             "AllowedPattern": "[a-zA-Z0-9]+\\..+"
         },
+        "HostedZoneId": {
+            "Description": "Hosted Zone id",
+            "Type": "AWS::SSM::Parameter::Value<String>",
+            "Default": "kj-profile-hosted-zone"
+        },
         "PuppetMasterIP": {
             "Description": "IP for the Puppet master",
             "Type": "String",
@@ -203,28 +208,8 @@
                 }
             }
         },
-        "HostedZone": {
-            "Type": "AWS::Route53::HostedZone",
-            "Properties": {
-                "HostedZoneConfig": {
-                    "Comment": "Hosted zone for kWesJenks.com"
-                },
-                "Name": "kWesJenks.com",
-                "VPCs": [
-                    {
-                        "VPCId": {
-                            "Ref": "VPC"
-                        },
-                        "VPCRegion": {
-                            "Ref": "AWS::Region"
-                        }
-                    }
-                ]
-            }
-        },
         "PuppetMasterDNSRecord": {
             "Type": "AWS::Route53::RecordSet",
-            "DependsOn": "HostedZone",
             "Properties": {
                 "HostedZoneId": {
                     "Fn::Join": [
@@ -232,7 +217,7 @@
                         [
                             "/hostedzone/",
                             {
-                                "Ref": "HostedZone"
+                                "Ref": "HostedZoneId"
                             }
                         ]
                     ]
@@ -254,12 +239,6 @@
                 "Ref": "VPC"
             },
             "Description": "VPC ID"
-        },
-        "HostedZoneID": {
-            "Value": {
-                "Ref": "HostedZone"
-            },
-            "Description": "Hosted Zone ID"
         },
         "SubnetIds": {
             "Value": {

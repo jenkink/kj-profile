@@ -16,6 +16,11 @@
             "Type": "String",
             "AllowedPattern": "[a-zA-Z0-9]+\\..+"
         },
+        "HostedZoneId": {
+            "Description": "Hosted Zone id",
+            "Type": "AWS::SSM::Parameter::Value<String>",
+            "Default": "kj-profile-hosted-zone"
+        },
         "RemoteAdminCIDR": {
             "Description": "CIDR block or IP for SSH access Note: a value of 0.0.0.0/0 will allow access from ANY ip address",
             "Type": "String",
@@ -147,10 +152,7 @@
                         ]
                     },
                     "HostedZoneId": {
-                        "Fn::GetAtt": [
-                            "VPCStack",
-                            "Outputs.HostedZoneID"
-                        ]
+                        "Ref": "HostedZoneId"
                     },
                     "PuppetMasterIP": {
                         "Ref": "PuppetMasterIP"
