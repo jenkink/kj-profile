@@ -14,9 +14,9 @@ CF_TEMPLATE_DIR=$1
 CREATE_TYPE=""
 DOCKER_REPO=""
 REGION="us-east-1"
-TEMPLATE="cloudformation/$CF_TEMPLATE_DIR/compute/$CF_TEMPLATE_DIR.json"
+TEMPLATE="cloudformation/compute/$CF_TEMPLATE_DIR.json"
 REVISION=$(echo $GIT_COMMIT|awk '{print substr($0,0,7)}')
-PARAMSFILE="cloudformation/$CF_TEMPLATE_DIR/compute/params.json"
+PARAMSFILE="cloudformation/compute/params.json"
 
 function build_docker_image(){
   echo "BUILDING DOCKER"
@@ -33,15 +33,14 @@ function build_docker_image(){
 }
 function s3_copy(){
   echo "Putting templates in s3"
-  aws s3 cp cloudformation/$CF_TEMPLATE_DIR/ s3://$CF_TEMPLATE_DIR/cf-templates/ --recursive
-  aws s3 cp cloudformation/puppet/ s3://$CF_TEMPLATE_DIR/cf-templates/ --recursive
+  aws s3 cp cloudformation/ s3://$CF_TEMPLATE_DIR/cf-templates/ --recursive
   sleep 10 #wait for files to propagate
   echo "pulling down params file"
   aws s3 cp s3://$CF_TEMPLATE_DIR/cf-templates/compute/params_$CF_TEMPLATE_DIR.json $PARAMSFILE
 
   echo $DOCKER_REPO
   jq -e -r --arg  DOCKER_REPO "$DOCKER_REPO" 'map ((select(.ParameterKey=="DockerImageURL") | .ParameterValue) |= $DOCKER_REPO)' \
-  "$PARAMSFILE" > "cloudformation/$CF_TEMPLATE_DIR/compute/temp.json" && mv "cloudformation/$CF_TEMPLATE_DIR/compute/temp.json" "$PARAMSFILE"
+  "$PARAMSFILE" > "cloudformation/compute/temp.json" && mv "cloudformation/compute/temp.json" "$PARAMSFILE"
    
 }
 #find out if our stack has already been created
@@ -58,7 +57,7 @@ function check_stack(){
 function create_stack(){
   echo "Stack $CF_TEMPLATE_DIR not found...creating"
   aws cloudformation create-stack --stack-name $CF_TEMPLATE_DIR --template-body file://$TEMPLATE --capabilities CAPABILITY_IAM \
-    --parameters file://cloudformation/$CF_TEMPLATE_DIR/compute/params.json
+    --parameters file://cloudformation/compute/params.json
 
   aws cloudformation wait stack-create-complete --stack-name $CF_TEMPLATE_DIR --region $REGION
   echo "Stack Update has completed."
@@ -66,7 +65,7 @@ function create_stack(){
 function update_stack(){
   echo "Updating $CF_TEMPLATE_DIR..."
   aws cloudformation update-stack --stack-name $CF_TEMPLATE_DIR --template-body file://$TEMPLATE --capabilities CAPABILITY_IAM \
-    --parameters file://cloudformation/$CF_TEMPLATE_DIR/compute/params.json
+    --parameters file://cloudformation/compute/params.json
 
   echo "updating stack"
   aws cloudformation wait stack-update-complete --stack-name $CF_TEMPLATE_DIR --region $REGION
